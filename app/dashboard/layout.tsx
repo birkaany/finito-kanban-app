@@ -7,7 +7,7 @@ export default function RootLayout({
 }) {
   return (
     <div className="flex flex-col h-full">
-      <Header />
+      {/* <Header /> */}
 
       <div className="flex h-full items-start">
         {/* <Sidebar />

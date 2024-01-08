@@ -1,3 +1,5 @@
+import Sidebar from "@/components/Sidebar";
+
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -6,5 +8,10 @@ export default async function Dashboard() {
   if (!session || !session.user) {
     redirect("/api/auth/signin");
   }
-  return <div>Dashboard</div>;
+
+  return (
+    <div>
+      <Sidebar />
+    </div>
+  );
 }
