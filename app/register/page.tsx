@@ -4,17 +4,17 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 export default function Register() {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/register", {
+      const response = await fetch("/api/auth/signUp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,20 +22,18 @@ export default function Register() {
         body: JSON.stringify({
           email,
           password,
+          passwordConfirm,
         }),
       });
-      if (res.status === 400) {
-        console.log("This email is already registered");
-      }
-      if (res.status === 200) {
-        console.log("başarılı");
-      }
-      if (res.status === 500) {
-        console.log("başarısız");
+      if (response.status === 201) {
+        alert("New user created!");
+      } else {
+        const errorMessage = await response.json(); // Get specific error message
+        alert(`Error: ${errorMessage}`);
       }
     } catch (error) {
-      console.log("Error, try again");
-      console.log(error);
+      console.error("Error creating user:", error);
+      alert("Something went wrong.");
     }
   };
 

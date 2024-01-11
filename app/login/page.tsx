@@ -3,37 +3,13 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 export default function Login() {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
 
-  useEffect(() => {
-    if (sessionStatus === "authenticated") {
-      router.replace("/dashboard");
-    }
-  }, [sessionStatus, router]);
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-    if (res?.error) {
-      console.log("Invalid email or password");
-      if (res?.url) router.replace("/dashboard");
-    } else {
-      console.log("başarılı");
-    }
-  };
+  const handleSubmit = async (e: FormEvent) => {};
 
   return (
     <main className="p-6 bg-gray-100 dark:bg-gray-800 min-h-screen flex items-center justify-center">
