@@ -9,7 +9,6 @@ import { FormEvent, useState } from "react";
 export default function Register() {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -22,18 +21,16 @@ export default function Register() {
         body: JSON.stringify({
           email,
           password,
-          passwordConfirm,
         }),
       });
       if (response.status === 201) {
-        alert("New user created!");
+        console.log("New user created!");
       } else {
-        const errorMessage = await response.json(); // Get specific error message
-        alert(`Error: ${errorMessage}`);
+        const error = await response.json(); // Get specific error message
+        console.log(`Error: ${error.message}`);
       }
     } catch (error) {
-      console.error("Error creating user:", error);
-      alert("Something went wrong.");
+      console.log("An error has occured: ", error);
     }
   };
 
@@ -67,16 +64,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirm-password">Confirm Password</Label>
-                <Input
-                  id="confirm-password"
-                  required
-                  type="password"
-                  value={passwordConfirm}
-                  onChange={(e) => setPasswordConfirm(e.target.value)}
-                />
-              </div>
+
               <Button className="w-full" type="submit">
                 Register
               </Button>
