@@ -4,12 +4,21 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormEvent, useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: FormEvent) => {};
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: true,
+      callbackUrl: "/dashboard", // Where to redirect after login
+    });
+  };
 
   return (
     <main className="p-6 bg-gray-100 dark:bg-gray-800 min-h-screen flex items-center justify-center">
