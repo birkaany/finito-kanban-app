@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 
 const LoginButton = () => {
   const { data: session } = useSession();
+
   if (session) {
     return <Button onClick={() => signOut()}>Sign out</Button>;
   }

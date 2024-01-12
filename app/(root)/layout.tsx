@@ -6,5 +6,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <header className=" px-6 py-3 flex justify-between">
+        <Logo />
+        <LoginButton />
+      </header>
+      {children}
+    </>
+  );
 }

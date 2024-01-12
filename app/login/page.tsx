@@ -4,9 +4,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Login() {
+  const session = useSession();
+  // if (session) {
+  //   redirect("/dashboard");
+  // }
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
 

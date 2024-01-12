@@ -32,13 +32,7 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <SessionProvider session={session}>
-          <header className=" px-6 py-3 flex justify-between">
-            <Logo />
-            <LoginButton />
-          </header>
-          {children}
-        </SessionProvider>
+        <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
   );
