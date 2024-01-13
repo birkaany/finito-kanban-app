@@ -7,29 +7,21 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import TaskCard from "./TaskCard";
 
 const TaskColumn = () => {
   return (
-    <div className="gap-4">
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle>
-            Done <span className="text-sm text-gray-500">(1)</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <Card className="shadow-md">
-              <CardContent className="p-2">
-                <CardTitle className="text-sm">Task 4</CardTitle>
-                <CardDescription className="text-xs">
-                  Task 4 description
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="flex-shrink-0 flex flex-col bg-gray-50 rounded-lg  dark:bg-gray-800 w-72">
+      <div className="px-4 py-2 bg-gray-100 rounded-t-lg dark:bg-gray-700">
+        <h2 className="font-semibold text-lg flex items-center justify-between">
+          In Progress <span className="text-sm">(2)</span>
+        </h2>
+      </div>
+      <div className="p-4 space-y-4">
+        <TaskCard />
+        <TaskCard />
+        <TaskCard />
+      </div>
     </div>
   );
 };
