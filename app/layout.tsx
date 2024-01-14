@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
-import Logo from "@/components/Logo";
-import LoginButton from "@/components/LoginButton";
+import QueryProvider from "@/components/QueryProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,7 +30,9 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session}>
+          <QueryProvider>{children}</QueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );

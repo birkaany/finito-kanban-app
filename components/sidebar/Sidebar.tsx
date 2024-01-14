@@ -1,19 +1,28 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import BoardList from "./BoardList";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Sidebar = () => {
-  const handleCreateBoard = async () => {
-    const res = await fetch("/api/createBoard", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: "New Board" }),
-    });
-    const data = await res.json();
+  const queryClient = useQueryClient();
+  const { mutate: addBoard } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch("/api/createBoard", {
+        method: "POST",
+        body: JSON.stringify({ title: "New Board" }),
+      });
+      const data = await res.json();
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["boards"]);
+    },
+  });
+  const handleCreateBoard = () => {
+    addBoard();
   };
-
   return (
     <aside className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
       <div className="flex h-full max-h-screen flex-col gap-2">
