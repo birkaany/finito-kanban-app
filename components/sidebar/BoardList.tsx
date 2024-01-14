@@ -1,11 +1,27 @@
+"use client";
 import Link from "next/link";
 import BoardListItem from "./BoardListItem";
+import { useEffect, useState } from "react";
 
 const BoardList = () => {
+  const [boards, setBoards] = useState([]);
+  useEffect(() => {
+    const fetchBoards = async () => {
+      const res = await fetch("/api/getBoards", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+      setBoards(data);
+    };
+    fetchBoards();
+  }, [boards]);
   return (
     <div className="flex-1 overflow-auto py-2">
       <div className="grid items-start px-4 text-sm font-medium">
-        <BoardListItem />
+        {boards.map((board) => (
+          <BoardListItem key={board.id} board={board} />
+        ))}
       </div>
     </div>
   );

@@ -6,7 +6,20 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 const authOptions: NextAuthOptions = {
+  callbacks: {
+    async session({ session, token }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+
+      return session;
+    },
+    async jwt({ token }) {
+      return token;
+    },
+  },
   adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -42,30 +55,6 @@ const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {
-    async jwt({ token, account, user, trigger, session }) {
-      if (trigger === "update" && session.userData.name) {
-        token.name = session.userData.name;
-        token.picture = session.userData.picture;
-      }
-
-      if (account) {
-        token.id = user.id;
-        token.accessToken = account.access_token;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        (session.user as User).id = token.sub as string;
-      }
-
-      return session;
-    },
-  },
 };
 
 export default authOptions;

@@ -1,11 +1,18 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import BoardList from "./BoardList";
 
 const Sidebar = () => {
-  const handleCreateBoard = async () => {};
+  const handleCreateBoard = async () => {
+    const res = await fetch("/api/createBoard", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: "New Board" }),
+    });
+    const data = await res.json();
+  };
 
   return (
     <aside className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
@@ -22,7 +29,7 @@ const Sidebar = () => {
         </div>
         <BoardList />
         <div className="p-4">
-          <Button className="w-full" size="sm">
+          <Button className="w-full" size="sm" onClick={handleCreateBoard}>
             Create New Board
           </Button>
         </div>

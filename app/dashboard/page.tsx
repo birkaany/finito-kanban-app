@@ -2,7 +2,6 @@ import Sidebar from "@/components/sidebar/Sidebar";
 
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import TaskColumn from "@/components/taskArea/TaskColumn";
 import TaskArea from "@/components/taskArea/TaskArea";
 
 export default async function Dashboard() {
