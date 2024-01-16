@@ -52,16 +52,6 @@ model User {
   boards Board[]
 }
 
-model VerificationRequest {
-  id         String   @id @default(cuid())
-  identifier String
-  token      String   @unique
-  expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  @@unique([identifier, token])
-}
-
 model Board {
   id        String   @id @default(cuid())
   title     String
@@ -69,6 +59,17 @@ model Board {
   updatedAt DateTime @updatedAt
   owner     User     @relation(fields: [userId], references: [id])
   userId    String   
+  columns   Column[]
+
+
+}
+model Column {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  board     Board    @relation(fields: [boardId], references: [id])
+  boardId   String 
   tasks     Task[]
 }
 
@@ -77,7 +78,17 @@ model Task {
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  board     Board    @relation(fields: [boardId], references: [id])
-  boardId   String 
+  column    Column   @relation(fields: [columnId], references: [id])
+  columnId  String
+  subtasks  Subtask[]
+}
+
+model Subtask{
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  task      Task     @relation(fields: [taskId], references: [id])
+  taskId    String
 }
 

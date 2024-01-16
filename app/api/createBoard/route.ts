@@ -15,12 +15,13 @@ export async function POST(req: Request, res: Response) {
     }
 
     const { user } = session;
-    const { title } = await req.json();
+    const { title, columns } = await req.json();
 
     // Kullanıcının kimliğiyle Board oluştur
     const createdBoard = await prisma.board.create({
       data: {
         title,
+        columns: {},
         userId: user.id,
       },
     });
