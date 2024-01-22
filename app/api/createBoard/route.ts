@@ -1,8 +1,6 @@
-import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { prisma } from "@/prisma/prisma";
-import { getSession } from "next-auth/react";
 import authOptions from "../auth/[...nextauth]/authOptions";
 
 export async function POST(req: Request, res: Response) {
@@ -21,7 +19,9 @@ export async function POST(req: Request, res: Response) {
     const createdBoard = await prisma.board.create({
       data: {
         title,
-        columns: {},
+        columns: {
+          create: columns,
+        },
         userId: user.id,
       },
     });

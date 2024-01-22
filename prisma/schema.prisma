@@ -59,10 +59,9 @@ model Board {
   updatedAt DateTime @updatedAt
   owner     User     @relation(fields: [userId], references: [id])
   userId    String   
-  columns   Column[]
-
-
+  columns   Column[] 
 }
+
 model Column {
   id        String   @id @default(cuid())
   title     String
@@ -70,7 +69,8 @@ model Column {
   updatedAt DateTime @updatedAt
   board     Board    @relation(fields: [boardId], references: [id])
   boardId   String 
-  tasks     Task[]
+  task     Task[]
+  
 }
 
 model Task {

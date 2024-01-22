@@ -1,47 +1,11 @@
-"use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import BoardList from "./BoardList";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  DialogTitle,
-  DialogContent,
-  Dialog,
-  DialogHeader,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  CardTitle,
-  CardDescription,
-  CardHeader,
-  CardContent,
-  CardFooter,
-  Card,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
+
 import { AddNewTaskForm } from "../forms/AddNewTaskForm";
 
 const Sidebar = () => {
-  const queryClient = useQueryClient();
-  const { mutate: addBoard } = useMutation({
-    mutationFn: async () => {
-      const res = await fetch("/api/createBoard", {
-        method: "POST",
-        body: JSON.stringify({ title: "New Board" }),
-      });
-      const data = await res.json();
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["boards"]);
-    },
-  });
-  const handleCreateBoard = () => {
-    addBoard();
-  };
   return (
     <>
       <aside className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
@@ -56,12 +20,11 @@ const Sidebar = () => {
               <span className="sr-only">Toggle notifications</span>
             </Button>
           </div>
-          <BoardList />
+          <Suspense fallback={<div>Loading...</div>}>
+            <BoardList />
+          </Suspense>
           <div className="p-4">
             <AddNewTaskForm />
-            {/* <Button className="w-full" size="sm" onClick={handleCreateBoard}>
-              Create New Board
-            </Button> */}
           </div>
           <div className="mt-auto p-4">
             <Button className="ml-auto h-8 w-8" size="icon" variant="outline">
@@ -74,6 +37,7 @@ const Sidebar = () => {
     </>
   );
 };
+
 function CircuitBoardIcon(props: any) {
   return (
     <svg

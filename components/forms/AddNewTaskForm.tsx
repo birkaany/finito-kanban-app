@@ -7,27 +7,43 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
 import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { FormEvent, useState } from "react";
+import { addBoard } from "@/actions/boardActions";
 
 export function AddNewTaskForm() {
   const [newBoard, setNewBoard] = useState({
     title: "",
-    columns: [],
+    columns: [
+      {
+        title: "",
+      },
+    ],
   });
+
   const handleChange = (e: any) => {
-    setNewBoard({ ...newBoard, [e.target.id]: e.target.value });
+    setNewBoard({ ...newBoard, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(newBoard);
+    addBoard(newBoard);
+    setNewBoard({
+      title: "",
+      columns: [
+        {
+          title: "",
+        },
+      ],
+    });
+    setIsOpen(false);
   };
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="w-full" size={"sm"}>
           New Board
@@ -45,33 +61,81 @@ export function AddNewTaskForm() {
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-1">
                 <Label htmlFor="board-title">Board Title</Label>
-                <Input id="board-title" placeholder="Enter board title" />
+                <Input
+                  id="board-title"
+                  placeholder="Enter board title"
+                  name="title"
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <fieldset className="border p-4 rounded-md space-y-2">
                 <legend className="font-semibold text-lg">Columns</legend>
-                <div className="flex space-x-2 items-center">
-                  <div className="flex-1 space-y-1">
-                    <Label htmlFor="column-1">Column 1</Label>
-                    <Input id="column-1" placeholder="Enter column name" />
+                {newBoard.columns.map((column, index) => (
+                  <div className="flex w-full gap-2">
+                    <Input
+                      id="column-1"
+                      required
+                      placeholder="eg. In Progress"
+                      onChange={(e) => {
+                        setNewBoard((prevBoard) => {
+                          const updatedColumns = prevBoard.columns.map(
+                            (col, i) =>
+                              i === index ? { title: e.target.value } : col
+                          );
+
+                          return {
+                            ...prevBoard,
+                            columns: updatedColumns,
+                          };
+                        });
+                      }}
+                    />
+
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setNewBoard((prevBoard) => {
+                          const updatedColumns = prevBoard.columns.filter(
+                            (col, i) => i !== index
+                          );
+
+                          return {
+                            ...prevBoard,
+                            columns: updatedColumns,
+                          };
+                        });
+                      }}
+                    >
+                      <span className="material-icons">
+                        <DeleteIcon />
+                      </span>
+                    </Button>
                   </div>
-                  <Button variant="outline">
-                    <span className="material-icons">clear</span>
-                  </Button>
-                </div>
-                <div className="flex space-x-2 items-center">
-                  <div className="flex-1 space-y-1">
-                    <Label htmlFor="column-2">Column 2</Label>
-                    <Input id="column-2" placeholder="Enter column name" />
-                  </div>
-                  <Button variant="outline">
-                    <span className="material-icons">clear</span>
-                  </Button>
-                </div>
+                ))}
               </fieldset>
-              <Button className="w-full" variant="outline">
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={() => {
+                  setNewBoard({
+                    ...newBoard,
+                    columns: [
+                      ...newBoard.columns,
+                      {
+                        title: "",
+                      },
+                    ],
+                  });
+                }}
+              >
                 Add Column
               </Button>
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!newBoard.title || newBoard.columns.length < 1}
+              >
                 Create Board
               </Button>
             </form>
@@ -81,3 +145,22 @@ export function AddNewTaskForm() {
     </Dialog>
   );
 }
+
+const DeleteIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      className="w-6 h-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6 18 18 6M6 6l12 12"
+      />
+    </svg>
+  );
+};
