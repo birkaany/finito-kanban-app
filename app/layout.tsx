@@ -4,7 +4,6 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
-import QueryProvider from "@/components/QueryProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,9 +29,7 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <SessionProvider session={session}>
-          <QueryProvider>{children}</QueryProvider>
-        </SessionProvider>
+        <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
   );
