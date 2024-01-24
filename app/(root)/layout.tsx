@@ -13,6 +13,7 @@ export default function RootLayout({
         <LoginButton />
       </header>
       {children}
+      <footer>Footer</footer>
     </>
   );
 }

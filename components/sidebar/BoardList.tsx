@@ -3,6 +3,7 @@ import { getBoardNames, getBoards } from "@/actions/boardActions";
 
 const BoardList = async () => {
   const boards = await getBoardNames();
+
   return (
     <div className="flex-1 overflow-auto py-2">
       <div className="grid items-start px-4 text-sm font-medium">

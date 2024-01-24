@@ -4,7 +4,15 @@ import { prisma } from "@/prisma/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
-export const addBoard = async (boardData) => {
+type BoardData = {
+  title: string;
+  columns: {
+    title: string;
+    order: number;
+  }[];
+};
+
+export const addBoard = async (boardData: BoardData) => {
   const { title, columns } = boardData;
 
   const session = await getServerSession(authOptions);
@@ -50,8 +58,24 @@ export const getBoardNames = async () => {
       userId: user.id,
     },
     select: {
+      id: true,
       title: true,
     },
   });
   return boards;
+};
+
+export const getColumns = async (id: string) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return { error: "Unauthorized" };
+  }
+  console.log(id);
+  const columns = await prisma.column.findMany({
+    where: {
+      boardId: id,
+    },
+  });
+  return columns;
+  revalidatePath("/dashboard/[id]");
 };

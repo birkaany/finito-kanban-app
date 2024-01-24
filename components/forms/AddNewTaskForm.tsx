@@ -72,7 +72,7 @@ export function AddNewTaskForm() {
               <fieldset className="border p-4 rounded-md space-y-2">
                 <legend className="font-semibold text-lg">Columns</legend>
                 {newBoard.columns.map((column, index) => (
-                  <div className="flex w-full gap-2">
+                  <div className="flex w-full gap-2" key={index}>
                     <Input
                       id="column-1"
                       required

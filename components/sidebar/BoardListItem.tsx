@@ -1,15 +1,15 @@
 import React from "react";
-import { Button } from "../ui/button";
+import Link from "next/link";
 
 const BoardListItem = ({ board }: { board: any }) => {
   return (
-    <Button
+    <Link
       className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-      variant="ghost"
+      href={`/dashboard/${board.id}`}
     >
       <HomeIcon className="h-4 w-4" />
       <span className="truncate">{board.title}</span>
-    </Button>
+    </Link>
   );
 };
 function HomeIcon(props: any) {
