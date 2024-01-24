@@ -37,7 +37,7 @@ export default async function RootLayout({
       >
         <SessionProvider session={session}>
           <DashboardHeader />
-          <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
+          <div className="grid h-[calc(100vh-60px)] w-full lg:grid-cols-[280px_1fr]">
             <Sidebar />
             {children}
           </div>

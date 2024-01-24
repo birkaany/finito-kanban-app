@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 const DashboardHeader = () => {
   return (
     <div className=" grid w-full lg:grid-cols-[280px_1fr]">
-      <div className="flex h-[60px] items-center border-b px-6">
+      <div className="flex h-[60px] items-center border-b px-6 bg-gray-100/40 border-r">
         <Link className="flex items-center gap-2 font-semibold" href="#">
           <CircuitBoardIcon className="h-6 w-6" />
           <span className="">Finito</span>
