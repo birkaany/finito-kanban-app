@@ -9,7 +9,6 @@ type DashboardProps = {
   };
 };
 export default async function Dashboard({ params }: DashboardProps) {
-  console.log({ params });
   const session = await getServerSession();
   if (!session) {
     redirect("/login");

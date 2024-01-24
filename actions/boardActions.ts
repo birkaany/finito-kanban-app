@@ -70,7 +70,7 @@ export const getColumns = async (id: string) => {
   if (!session) {
     return { error: "Unauthorized" };
   }
-  console.log(id);
+
   const columns = await prisma.column.findMany({
     where: {
       boardId: id,

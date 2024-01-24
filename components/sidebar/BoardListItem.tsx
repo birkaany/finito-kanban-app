@@ -1,15 +1,27 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { useParams } from "next/navigation";
+import clsx from "clsx";
 
 const BoardListItem = ({ board }: { board: any }) => {
+  const params = useParams();
+  const isActive = params.slug === board.id;
+  const activeClass =
+    "bg-gray-300 dark:bg-gray-800 text-gray-900 dark:text-gray-50 hover:bg-gray-300";
   return (
-    <Link
-      className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-      href={`/dashboard/${board.id}`}
+    <Button
+      asChild
+      className={`flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 
+      ${isActive ? activeClass : ""}`}
+      variant={"ghost"}
     >
-      <HomeIcon className="h-4 w-4" />
-      <span className="truncate">{board.title}</span>
-    </Link>
+      <Link href={`/dashboard/${board.id}`}>
+        <HomeIcon className="h-4 w-4" />
+        <span className="truncate">{board.title}</span>
+      </Link>
+    </Button>
   );
 };
 function HomeIcon(props: any) {
