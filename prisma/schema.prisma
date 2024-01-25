@@ -88,6 +88,7 @@ model Subtask{
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isDone    Boolean  @default(false)
   task      Task     @relation(fields: [taskId], references: [id])
   taskId    String
 }

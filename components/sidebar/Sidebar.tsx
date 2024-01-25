@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import BoardList from "./BoardList";
 
-import { AddNewTaskForm } from "../forms/AddNewTaskForm";
+import { AddNewBoardForm } from "../forms/AddNewBoardForm";
 
 const Sidebar = () => {
   return (
@@ -14,7 +14,7 @@ const Sidebar = () => {
             <BoardList />
           </Suspense>
           <div className="p-4">
-            <AddNewTaskForm />
+            <AddNewBoardForm />
           </div>
           <div className="mt-auto p-4">
             <Button className="ml-auto h-8 w-8" size="icon" variant="outline">

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { AddNewTaskForm } from "../forms/AddNewTaskForm";
 
 const DashboardHeader = () => {
   return (
@@ -34,9 +35,6 @@ const DashboardHeader = () => {
             </div>
           </form>
         </div>
-        <Button className="ml-auto" size="sm">
-          New Task
-        </Button>
       </header>
     </div>
   );

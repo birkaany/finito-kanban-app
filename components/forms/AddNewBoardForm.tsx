@@ -10,15 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-
 import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { FormEvent, useState } from "react";
-import { addTask } from "@/actions/boardActions";
+import { addBoard } from "@/actions/boardActions";
 
-export function AddNewTaskForm({ columnId }) {
-  const [newTask, setNewTask] = useState({
+export function AddNewBoardForm() {
+  const [newBoard, setNewBoard] = useState({
     title: "",
-    subtasks: [
+    columns: [
       {
         title: "",
       },
@@ -26,14 +25,14 @@ export function AddNewTaskForm({ columnId }) {
   });
 
   const handleChange = (e: any) => {
-    setNewTask({ ...newTask, [e.target.name]: e.target.value });
+    setNewBoard({ ...newBoard, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    addTask(newTask, columnId);
-    setNewTask({
+    addBoard(newBoard);
+    setNewBoard({
       title: "",
-      subtasks: [
+      columns: [
         {
           title: "",
         },
@@ -46,47 +45,48 @@ export function AddNewTaskForm({ columnId }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size={"icon"} variant={"outline"}>
-          +
+        <Button className="w-full" size={"sm"}>
+          New Board
         </Button>
       </DialogTrigger>
       <DialogContent>
         <Card>
           <CardHeader>
-            <CardTitle>Create New Task</CardTitle>
+            <CardTitle>Create New Board</CardTitle>
             <CardDescription>
-              Enter the details for your new card below.
+              Enter the details for your new board below.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-1">
-                <Label htmlFor="task-title">Task Title</Label>
+                <Label htmlFor="board-title">Board Title</Label>
                 <Input
-                  id="task-title"
-                  placeholder="Enter task title"
+                  id="board-title"
+                  placeholder="Enter board title"
                   name="title"
                   onChange={handleChange}
                   required
                 />
               </div>
               <fieldset className="border p-4 rounded-md space-y-2">
-                <legend className="font-semibold text-sm">Subtasks</legend>
-                {newTask.subtasks.map((subtask, index) => (
+                <legend className="font-semibold text-lg">Columns</legend>
+                {newBoard.columns.map((column, index) => (
                   <div className="flex w-full gap-2" key={index}>
                     <Input
-                      id="subtask-title"
+                      id="column-1"
                       required
-                      placeholder="eg. Buy milk"
+                      placeholder="eg. In Progress"
                       onChange={(e) => {
-                        setNewTask((prevBoard) => {
-                          const updatedTask = prevBoard.subtasks.map((col, i) =>
-                            i === index ? { title: e.target.value } : col
+                        setNewBoard((prevBoard) => {
+                          const updatedColumns = prevBoard.columns.map(
+                            (col, i) =>
+                              i === index ? { title: e.target.value } : col
                           );
 
                           return {
                             ...prevBoard,
-                            subtasks: updatedTask,
+                            columns: updatedColumns,
                           };
                         });
                       }}
@@ -95,14 +95,14 @@ export function AddNewTaskForm({ columnId }) {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        setNewTask((prevBoard) => {
-                          const updatedTask = prevBoard.subtasks.filter(
+                        setNewBoard((prevBoard) => {
+                          const updatedColumns = prevBoard.columns.filter(
                             (col, i) => i !== index
                           );
 
                           return {
                             ...prevBoard,
-                            columns: updatedTask,
+                            columns: updatedColumns,
                           };
                         });
                       }}
@@ -118,10 +118,10 @@ export function AddNewTaskForm({ columnId }) {
                 className="w-full"
                 variant="outline"
                 onClick={() => {
-                  setNewTask({
-                    ...newTask,
-                    subtasks: [
-                      ...newTask.subtasks,
+                  setNewBoard({
+                    ...newBoard,
+                    columns: [
+                      ...newBoard.columns,
                       {
                         title: "",
                       },
@@ -129,15 +129,14 @@ export function AddNewTaskForm({ columnId }) {
                   });
                 }}
               >
-                Add Subtask
+                Add Column
               </Button>
-
               <Button
                 type="submit"
                 className="w-full"
-                disabled={!newTask.title || newTask.subtasks.length < 1}
+                disabled={!newBoard.title || newBoard.columns.length < 1}
               >
-                Create Task
+                Create Board
               </Button>
             </form>
           </CardContent>
@@ -153,7 +152,7 @@ const DeleteIcon = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth="1.5"
+      stroke-width="1.5"
       stroke="currentColor"
       className="w-6 h-6"
     >
@@ -165,22 +164,3 @@ const DeleteIcon = () => {
     </svg>
   );
 };
-
-function ChevronDownIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
