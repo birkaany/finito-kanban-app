@@ -14,10 +14,12 @@ import {
 import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { FormEvent, useState } from "react";
 import { addTask } from "@/actions/boardActions";
+import { Textarea } from "../ui/textarea";
 
 export function AddNewTaskForm({ columnId }) {
   const [newTask, setNewTask] = useState({
     title: "",
+    description: "",
     subtasks: [
       {
         title: "",
@@ -33,6 +35,7 @@ export function AddNewTaskForm({ columnId }) {
     addTask(newTask, columnId);
     setNewTask({
       title: "",
+      description: "",
       subtasks: [
         {
           title: "",
@@ -70,6 +73,17 @@ export function AddNewTaskForm({ columnId }) {
                   required
                 />
               </div>
+              <div className="space-y-1">
+                <Label htmlFor="task-description">Description</Label>
+                <Textarea
+                  id="task-description"
+                  placeholder="e.g. It’s always good to take a break. This 15 minute break will 
+                  recharge the batteries a little."
+                  name="description"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
               <fieldset className="border p-4 rounded-md space-y-2">
                 <legend className="font-semibold text-sm">Subtasks</legend>
                 {newTask.subtasks.map((subtask, index) => (
@@ -102,7 +116,7 @@ export function AddNewTaskForm({ columnId }) {
 
                           return {
                             ...prevBoard,
-                            columns: updatedTask,
+                            subtasks: updatedTask,
                           };
                         });
                       }}
@@ -113,24 +127,24 @@ export function AddNewTaskForm({ columnId }) {
                     </Button>
                   </div>
                 ))}
+                <Button
+                  className="w-full"
+                  variant="outline"
+                  onClick={() => {
+                    setNewTask({
+                      ...newTask,
+                      subtasks: [
+                        ...newTask.subtasks,
+                        {
+                          title: "",
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  Add Subtask
+                </Button>
               </fieldset>
-              <Button
-                className="w-full"
-                variant="outline"
-                onClick={() => {
-                  setNewTask({
-                    ...newTask,
-                    subtasks: [
-                      ...newTask.subtasks,
-                      {
-                        title: "",
-                      },
-                    ],
-                  });
-                }}
-              >
-                Add Subtask
-              </Button>
 
               <Button
                 type="submit"
@@ -166,10 +180,9 @@ const DeleteIcon = () => {
   );
 };
 
-function ChevronDownIcon(props) {
+function ChevronDownIcon() {
   return (
     <svg
-      {...props}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"

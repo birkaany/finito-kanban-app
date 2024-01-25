@@ -81,7 +81,20 @@ export const getTasks = async (id: string) => {
     },
   });
   return tasks;
-  revalidatePath("/dashboard/[id]");
+};
+
+export const getSubtasks = async (id: string) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return { error: "Unauthorized" };
+  }
+
+  const subtasks = await prisma.subtask.findMany({
+    where: {
+      taskId: id,
+    },
+  });
+  return subtasks;
 };
 
 export const getBoardNames = async () => {
@@ -114,7 +127,6 @@ export const getColumns = async (id: string) => {
     },
   });
   return columns;
-  revalidatePath("/dashboard/[id]");
 };
 
 export const getColumnNames = async (id: string) => {
