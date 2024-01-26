@@ -11,6 +11,17 @@ import {
 } from "../ui/dropdown-menu";
 
 import { EditTaskForm } from "../forms/EditTaskForm";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
+import { deleteTask } from "@/actions/boardActions";
 
 export function TaskActions({ task }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -42,6 +53,26 @@ export function TaskActions({ task }) {
         open={isEditOpen}
         onOpenChange={setIsEditOpen}
       />
+      <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this
+              task and remove from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-500"
+              onClick={() => deleteTask(task.id)}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

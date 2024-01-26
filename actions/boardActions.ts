@@ -24,7 +24,6 @@ export const addBoard = async (boardData: BoardData) => {
 
   const session = await getServerSession(authOptions);
   if (!session) {
-    // return response
     return { error: "Unauthorized" };
   }
   const { user } = session;
@@ -55,7 +54,7 @@ export const addTask = async (taskData: TaskData, columnId: string) => {
       columnId: columnId,
     },
   });
-  revalidatePath("/dashboard/[id]");
+  revalidatePath("/dashboard/[slug]");
 };
 
 export const getBoards = async () => {
@@ -168,7 +167,7 @@ export const updateTask = async (id: string, updatedTask) => {
       subtasks: true,
     },
   });
-
+  revalidatePath("/dashboard/[slug]");
   return updated;
 };
 
@@ -187,4 +186,28 @@ export const getTaskWithSubtasks = async (id: string) => {
     },
   });
   return task;
+};
+
+export const deleteTask = async (id: string) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return { error: "Unauthorized" };
+  }
+
+  await prisma.subtask.deleteMany({
+    where: {
+      taskId: id,
+    },
+  });
+
+  const deletedTask = await prisma.task.delete({
+    where: {
+      id: id,
+    },
+    include: {
+      subtasks: true,
+    },
+  });
+  revalidatePath("/dashboard/[slug]");
+  return deletedTask;
 };
