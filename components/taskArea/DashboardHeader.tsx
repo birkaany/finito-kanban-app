@@ -12,10 +12,6 @@ const DashboardHeader = () => {
           <CircuitBoardIcon className="h-6 w-6" />
           <span className="">Finito</span>
         </Link>
-        <Button className="ml-auto h-8 w-8" size="icon" variant="outline">
-          <BellIcon className="h-4 w-4" />
-          <span className="sr-only">Toggle notifications</span>
-        </Button>
       </div>
 
       <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">

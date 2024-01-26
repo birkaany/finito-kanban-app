@@ -13,6 +13,7 @@ type BoardData = {
 
 type TaskData = {
   title: string;
+  description: string;
   subtasks: {
     title: string;
   }[];
@@ -39,7 +40,7 @@ export const addBoard = async (boardData: BoardData) => {
   revalidatePath("/dashboard");
 };
 export const addTask = async (taskData: TaskData, columnId: string) => {
-  const { title, subtasks } = taskData;
+  const { title, subtasks, description } = taskData;
   const session = await getServerSession(authOptions);
   if (!session) {
     return { error: "Unauthorized" };
@@ -47,6 +48,7 @@ export const addTask = async (taskData: TaskData, columnId: string) => {
   const newTask = await prisma.task.create({
     data: {
       title,
+      description,
       subtasks: {
         create: subtasks,
       },
@@ -79,22 +81,11 @@ export const getTasks = async (id: string) => {
     where: {
       columnId: id,
     },
-  });
-  return tasks;
-};
-
-export const getSubtasks = async (id: string) => {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return { error: "Unauthorized" };
-  }
-
-  const subtasks = await prisma.subtask.findMany({
-    where: {
-      taskId: id,
+    include: {
+      subtasks: true,
     },
   });
-  return subtasks;
+  return tasks;
 };
 
 export const getBoardNames = async () => {
@@ -126,6 +117,7 @@ export const getColumns = async (id: string) => {
       boardId: id,
     },
   });
+
   return columns;
 };
 
@@ -145,4 +137,54 @@ export const getColumnNames = async (id: string) => {
     },
   });
   return columns;
+};
+
+export const updateTask = async (id: string, updatedTask) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return { error: "Unauthorized" };
+  }
+
+  const { title, description, subtasks } = updatedTask;
+
+  const updatedSubtasks = subtasks.map((subtask) => ({
+    where: { id: subtask.id },
+    data: {
+      title: subtask.title,
+    },
+  }));
+  const updated = await prisma.task.update({
+    where: {
+      id: id,
+    },
+    data: {
+      title,
+      description,
+      subtasks: {
+        updateMany: updatedSubtasks,
+      },
+    },
+    include: {
+      subtasks: true,
+    },
+  });
+
+  return updated;
+};
+
+export const getTaskWithSubtasks = async (id: string) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return { error: "Unauthorized" };
+  }
+
+  const task = await prisma.task.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      subtasks: true,
+    },
+  });
+  return task;
 };
