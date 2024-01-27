@@ -10,7 +10,9 @@ const TaskArea = async ({ boardId }: { boardId: string }) => {
         <div className="flex gap-4">
           {Array.isArray(taskColumns) &&
             taskColumns.map((column) => {
-              return <TaskColumn key={column.id} column={column} />;
+              return (
+                <TaskColumn key={column.id} column={{ ...column, tasks: [] }} />
+              );
             })}
         </div>
       </main>

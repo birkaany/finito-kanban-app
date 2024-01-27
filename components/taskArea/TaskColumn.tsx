@@ -1,20 +1,10 @@
 import { getTasks } from "@/actions/boardActions";
 import { AddNewTaskForm } from "../forms/AddNewTaskForm";
 import TaskCard from "./TaskCard";
-import type { Column } from "@prisma/client";
-type TaskColumnProps = {
-  column: Column;
-};
+import { ColumnProps } from "@/types/type";
 
-type Column = {
-  id: number;
-  title: string;
-};
-const TaskColumn: React.FC<TaskColumnProps> = async ({
-  column,
-}: {
-  column: Column;
-}) => {
+const TaskColumn = async ({ column }: { column: ColumnProps }) => {
+  if (!column.id) return null;
   const tasks = await getTasks(column.id);
 
   return (
@@ -27,7 +17,12 @@ const TaskColumn: React.FC<TaskColumnProps> = async ({
       </div>
       <div className="p-4 space-y-4">
         {Array.isArray(tasks) &&
-          tasks?.map((task) => <TaskCard key={task.id} task={task} />)}
+          tasks?.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={{ ...task, description: task.description || "" }}
+            />
+          ))}
       </div>
     </div>
   );

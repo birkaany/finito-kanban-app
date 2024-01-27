@@ -11,11 +11,12 @@ import {
   CardTitle,
 } from "../ui/card";
 import { DialogContent, DialogTrigger } from "../ui/dialog";
-import { FormEvent, useState } from "react";
+import { FormEvent, InputHTMLAttributes, useState } from "react";
 import { addBoard } from "@/actions/boardActions";
 
 export function AddNewBoardForm() {
   const [newBoard, setNewBoard] = useState({
+    id: "",
     title: "",
     columns: [
       {
@@ -31,6 +32,7 @@ export function AddNewBoardForm() {
     e.preventDefault();
     addBoard(newBoard);
     setNewBoard({
+      id: "",
       title: "",
       columns: [
         {
@@ -71,7 +73,7 @@ export function AddNewBoardForm() {
               </div>
               <fieldset className="border p-4 rounded-md space-y-2">
                 <legend className="font-semibold text-lg">Columns</legend>
-                {newBoard.columns.map((column, index) => (
+                {newBoard.columns?.map((column, index) => (
                   <div className="flex w-full gap-2" key={index}>
                     <Input
                       id="column-1"
@@ -79,7 +81,7 @@ export function AddNewBoardForm() {
                       placeholder="eg. In Progress"
                       onChange={(e) => {
                         setNewBoard((prevBoard) => {
-                          const updatedColumns = prevBoard.columns.map(
+                          const updatedColumns = prevBoard.columns?.map(
                             (col, i) =>
                               i === index ? { title: e.target.value } : col
                           );
@@ -96,7 +98,7 @@ export function AddNewBoardForm() {
                       variant="outline"
                       onClick={() => {
                         setNewBoard((prevBoard) => {
-                          const updatedColumns = prevBoard.columns.filter(
+                          const updatedColumns = prevBoard.columns?.filter(
                             (col, i) => i !== index
                           );
 
@@ -121,7 +123,7 @@ export function AddNewBoardForm() {
                   setNewBoard({
                     ...newBoard,
                     columns: [
-                      ...newBoard.columns,
+                      ...(newBoard.columns || []),
                       {
                         title: "",
                       },

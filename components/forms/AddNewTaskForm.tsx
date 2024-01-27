@@ -16,13 +16,14 @@ import { FormEvent, useState } from "react";
 import { addTask } from "@/actions/boardActions";
 import { Textarea } from "../ui/textarea";
 
-export function AddNewTaskForm({ columnId }) {
+export function AddNewTaskForm({ columnId }: { columnId: string }) {
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
     subtasks: [
       {
         title: "",
+        isDone: false,
       },
     ],
   });
@@ -39,6 +40,7 @@ export function AddNewTaskForm({ columnId }) {
       subtasks: [
         {
           title: "",
+          isDone: false,
         },
       ],
     });
@@ -86,7 +88,7 @@ export function AddNewTaskForm({ columnId }) {
               </div>
               <fieldset className="border p-4 rounded-md space-y-2">
                 <legend className="font-semibold text-sm">Subtasks</legend>
-                {newTask.subtasks.map((subtask, index) => (
+                {newTask.subtasks?.map((subtask, index) => (
                   <div className="flex w-full gap-2" key={index}>
                     <Input
                       id="subtask-title"
@@ -94,13 +96,16 @@ export function AddNewTaskForm({ columnId }) {
                       placeholder="eg. Buy milk"
                       onChange={(e) => {
                         setNewTask((prevBoard) => {
-                          const updatedTask = prevBoard.subtasks.map((col, i) =>
-                            i === index ? { title: e.target.value } : col
+                          const updatedSubtask = prevBoard.subtasks?.map(
+                            (subtask, i) =>
+                              i === index
+                                ? { ...subtask, title: e.target.value }
+                                : subtask
                           );
 
                           return {
                             ...prevBoard,
-                            subtasks: updatedTask,
+                            subtasks: updatedSubtask,
                           };
                         });
                       }}
@@ -110,7 +115,7 @@ export function AddNewTaskForm({ columnId }) {
                       variant="outline"
                       onClick={() => {
                         setNewTask((prevBoard) => {
-                          const updatedTask = prevBoard.subtasks.filter(
+                          const updatedTask = prevBoard.subtasks?.filter(
                             (col, i) => i !== index
                           );
 
@@ -134,9 +139,10 @@ export function AddNewTaskForm({ columnId }) {
                     setNewTask({
                       ...newTask,
                       subtasks: [
-                        ...newTask.subtasks,
+                        ...(newTask.subtasks || []),
                         {
                           title: "",
+                          isDone: false,
                         },
                       ],
                     });

@@ -1,25 +1,11 @@
 "use server";
 import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
 import { prisma } from "@/prisma/prisma";
+import { BoardProps, TaskProps } from "@/types/type";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
-type BoardData = {
-  title: string;
-  columns: {
-    title: string;
-  }[];
-};
-
-type TaskData = {
-  title: string;
-  description: string;
-  subtasks: {
-    title: string;
-  }[];
-};
-
-export const addBoard = async (boardData: BoardData) => {
+export const addBoard = async (boardData: BoardProps) => {
   const { title, columns } = boardData;
 
   const session = await getServerSession(authOptions);
@@ -38,7 +24,7 @@ export const addBoard = async (boardData: BoardData) => {
   });
   revalidatePath("/dashboard");
 };
-export const addTask = async (taskData: TaskData, columnId: string) => {
+export const addTask = async (taskData: TaskProps, columnId: string) => {
   const { title, subtasks, description } = taskData;
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -138,7 +124,7 @@ export const getColumnNames = async (id: string) => {
   return columns;
 };
 
-export const updateTask = async (id: string, updatedTask) => {
+export const updateTask = async (id: string, updatedTask: TaskProps) => {
   const session = await getServerSession(authOptions);
   if (!session) {
     return { error: "Unauthorized" };
@@ -146,7 +132,7 @@ export const updateTask = async (id: string, updatedTask) => {
 
   const { title, description, subtasks } = updatedTask;
 
-  const updatedSubtasks = subtasks.map((subtask) => ({
+  const updatedSubtasks = subtasks?.map((subtask) => ({
     where: { id: subtask.id },
     data: {
       title: subtask.title,

@@ -1,26 +1,16 @@
+import { TaskProps } from "@/types/type";
 import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 import { TaskActions } from "./TaskActions";
 
-type TaskCardProps = {
-  title: string;
-  description: string;
-  subtasks: {
-    title: string;
-    isDone: boolean;
-  }[];
-};
-
-const TaskCard = async ({ task }: { task: TaskCardProps }) => {
-  const doneSubtasks =
-    Array.isArray(task.subtasks) &&
-    task.subtasks.filter((subtask) => subtask.isDone);
+const TaskCard = async ({ task }: { task: TaskProps }) => {
+  const doneSubtasks = task.subtasks?.filter((subtask) => subtask.isDone);
 
   return (
     <Card className="w-full">
       <CardContent className="p-3 flex items-start justify-between">
         <div>
           <CardTitle className="text-base">{task.title}</CardTitle>
-          <CardDescription>{`${doneSubtasks.length} of ${task.subtasks.length} Subtasks`}</CardDescription>
+          <CardDescription>{`${doneSubtasks?.length} of ${task.subtasks?.length} Subtasks`}</CardDescription>
         </div>
         <TaskActions task={task} />
       </CardContent>

@@ -22,8 +22,9 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { deleteTask } from "@/actions/boardActions";
+import { TaskProps } from "@/types/type";
 
-export function TaskActions({ task }) {
+export function TaskActions({ task }: { task: TaskProps }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -66,7 +67,7 @@ export function TaskActions({ task }) {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-500"
-              onClick={() => deleteTask(task.id)}
+              onClick={() => task.id && deleteTask(task.id)}
             >
               Delete
             </AlertDialogAction>

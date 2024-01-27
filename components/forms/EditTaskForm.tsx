@@ -15,9 +15,18 @@ import { DialogContent } from "../ui/dialog";
 import { FormEvent, useState } from "react";
 import { updateTask } from "@/actions/boardActions";
 import { Textarea } from "../ui/textarea";
+import { TaskProps } from "@/types/type";
 
-export function EditTaskForm({ task, open, onOpenChange }) {
-  const [updatedTask, setUpdatedTask] = useState({
+export function EditTaskForm({
+  task,
+  open,
+  onOpenChange,
+}: {
+  task: TaskProps;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const [updatedTask, setUpdatedTask] = useState<TaskProps>({
     title: task.title,
     description: task.description,
     subtasks: task.subtasks,
@@ -28,7 +37,7 @@ export function EditTaskForm({ task, open, onOpenChange }) {
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    updateTask(task.id, updatedTask);
+    task.id && updateTask(task.id, updatedTask);
     onOpenChange(false);
   };
 
@@ -67,7 +76,7 @@ export function EditTaskForm({ task, open, onOpenChange }) {
               </div>
               <fieldset className="border p-4 rounded-md space-y-2">
                 <legend className="font-semibold text-sm">Subtasks</legend>
-                {updatedTask.subtasks.map(({ id, title }) => (
+                {updatedTask.subtasks?.map(({ id, title }) => (
                   <div className="flex w-full gap-2" key={id}>
                     <Input
                       id="subtask-title"
@@ -76,7 +85,7 @@ export function EditTaskForm({ task, open, onOpenChange }) {
                       onChange={(e) => {
                         setUpdatedTask({
                           ...updatedTask,
-                          subtasks: updatedTask.subtasks.map((subtask) => {
+                          subtasks: updatedTask.subtasks?.map((subtask) => {
                             if (subtask.id === id) {
                               return {
                                 ...subtask,
@@ -118,7 +127,9 @@ export function EditTaskForm({ task, open, onOpenChange }) {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={!updatedTask.title || updatedTask.subtasks.length < 1}
+                disabled={
+                  !updatedTask.title || (updatedTask.subtasks?.length ?? 0) < 1
+                }
               >
                 Update Task
               </Button>
