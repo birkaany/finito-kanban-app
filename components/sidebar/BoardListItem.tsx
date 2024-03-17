@@ -7,9 +7,10 @@ import clsx from "clsx";
 
 const BoardListItem = ({ board }: { board: any }) => {
   const params = useParams();
-  const isActive = params.slug === board.id;
+  const isActive = params.boardId === board.id;
+
   const activeClass =
-    "bg-gray-300 dark:bg-gray-800 text-gray-900 dark:text-gray-50 hover:bg-gray-300";
+    "bg-accent dark:bg-gray-700 text-gray-900 dark:text-gray-50 ";
   return (
     <Button
       asChild
@@ -24,6 +25,7 @@ const BoardListItem = ({ board }: { board: any }) => {
     </Button>
   );
 };
+
 function HomeIcon(props: any) {
   return (
     <svg

@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { AddNewTaskForm } from "../forms/AddNewTaskForm";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { AddNewTaskForm } from "./forms/AddNewTaskForm";
 
 const DashboardHeader = () => {
   return (
