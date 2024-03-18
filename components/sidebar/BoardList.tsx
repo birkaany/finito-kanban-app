@@ -1,6 +1,6 @@
 "use client";
 
-import { fetcher } from "@/lib/fetcher";
+import { fetcher } from "@/app/lib/fetcher";
 import BoardListItem from "./BoardListItem";
 import useSWR from "swr";
 

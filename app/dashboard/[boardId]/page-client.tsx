@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { fetcher } from "@/lib/fetcher";
+import { fetcher } from "@/app/lib/fetcher";
 import TaskColumn from "@/components/taskArea/TaskColumn";
 import { useParams } from "next/navigation";
 

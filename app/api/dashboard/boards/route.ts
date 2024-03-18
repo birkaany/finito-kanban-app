@@ -23,8 +23,9 @@ export async function GET() {
   return NextResponse.json(boards);
 }
 
-export async function POST(req: BoardProps) {
-  const { title, columns } = req;
+export async function POST(req: any) {
+  const body = await req.json();
+  const { title, columns } = body;
   const session = await getServerSession(authOptions);
   if (!session) {
     return Response.json({ message: "Unauthorized" });
@@ -39,6 +40,5 @@ export async function POST(req: BoardProps) {
       userId: user.id,
     },
   });
-
   return NextResponse.json(newBoard);
 }

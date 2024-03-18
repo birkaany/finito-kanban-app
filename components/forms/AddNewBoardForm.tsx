@@ -11,10 +11,13 @@ import {
   CardTitle,
 } from "../ui/card";
 import { DialogContent, DialogTrigger } from "../ui/dialog";
-import { FormEvent, InputHTMLAttributes, useState } from "react";
-import { addBoard } from "@/actions/boardActions";
+import { FormEvent, useState } from "react";
+import useSWR from "swr";
+import { fetcher } from "@/app/lib/fetcher";
 
 export function AddNewBoardForm() {
+  const { data, mutate } = useSWR("/api/dashboard/boards", fetcher);
+
   const [newBoard, setNewBoard] = useState({
     id: "",
     title: "",
@@ -28,9 +31,17 @@ export function AddNewBoardForm() {
   const handleChange = (e: any) => {
     setNewBoard({ ...newBoard, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    addBoard(newBoard);
+    fetch(`/api/dashboard/boards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newBoard),
+    }).then(() => {
+      mutate("/api/dashboard/boards", true);
+    });
     setNewBoard({
       id: "",
       title: "",

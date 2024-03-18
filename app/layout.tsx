@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/lib/utils";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
 

@@ -1,4 +1,4 @@
-import { registerSchema } from "./../../../../lib/validationSchemas";
+import { registerSchema } from "../../../lib/validationSchemas";
 import { prisma } from "@/prisma/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
