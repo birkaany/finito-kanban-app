@@ -14,10 +14,9 @@ import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { FormEvent, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/app/lib/fetcher";
+import { mutate } from "swr";
 
 export function AddNewBoardForm() {
-  const { data, mutate } = useSWR("/api/dashboard/boards", fetcher);
-
   const [newBoard, setNewBoard] = useState({
     id: "",
     title: "",

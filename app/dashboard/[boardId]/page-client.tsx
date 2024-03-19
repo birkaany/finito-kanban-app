@@ -6,12 +6,12 @@ import TaskColumn from "@/components/taskArea/TaskColumn";
 import { useParams } from "next/navigation";
 
 const BoardPage = () => {
-  const params = useParams();
+  const { boardId } = useParams();
   const {
     data: board,
     error,
     isLoading,
-  } = useSWR(`/api/dashboard/boards/${params.boardId}`, fetcher);
+  } = useSWR(`/api/dashboard/boards/${boardId}`, fetcher);
 
   return (
     <div className="flex flex-col">

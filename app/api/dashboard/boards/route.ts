@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import authOptions from "../../auth/[...nextauth]/authOptions";
-import { prisma } from "@/prisma/prisma";
+import prisma from "@/prisma/prisma";
 import { NextResponse } from "next/server";
 import { BoardProps } from "@/types/type";
 

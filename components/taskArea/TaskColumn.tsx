@@ -1,3 +1,4 @@
+"use client";
 import TaskCard from "./TaskCard";
 
 const TaskColumn = ({ title, tasks }: { title: string; tasks: any[] }) => {

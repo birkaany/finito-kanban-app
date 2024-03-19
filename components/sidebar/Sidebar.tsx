@@ -1,8 +1,7 @@
+"use client";
 import React, { Suspense } from "react";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import BoardList from "./BoardList";
-
 import { AddNewBoardForm } from "../forms/AddNewBoardForm";
 
 const Sidebar = () => {
@@ -26,7 +25,6 @@ const Sidebar = () => {
     </>
   );
 };
-
 
 function MoonIcon(props: any) {
   return (

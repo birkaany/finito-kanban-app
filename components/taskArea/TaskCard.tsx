@@ -1,3 +1,4 @@
+"use client";
 import { TaskProps } from "@/types/type";
 import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 import { TaskActions } from "./TaskActions";
