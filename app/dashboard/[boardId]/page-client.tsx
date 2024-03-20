@@ -19,8 +19,9 @@ const BoardPage = () => {
         <div className="flex gap-4 items-start">
           {isLoading && <div>Loading...</div>}
           {Array.isArray(board) &&
-            board.map((column: any) => (
+            board.map((column: any, id) => (
               <TaskColumn
+                id={column.id}
                 key={column.id}
                 title={column.title}
                 tasks={column.task}

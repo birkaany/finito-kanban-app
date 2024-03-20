@@ -13,10 +13,12 @@ import {
 
 import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { FormEvent, useState } from "react";
-import { addTask } from "@/actions/boardActions";
 import { Textarea } from "../ui/textarea";
+import { mutate } from "swr";
+import { useParams } from "next/navigation";
 
-export function AddNewTaskForm({ columnId }: { columnId: string }) {
+export function AddNewTaskForm({ id }: { id: string }) {
+  const { boardId } = useParams();
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
@@ -33,7 +35,6 @@ export function AddNewTaskForm({ columnId }: { columnId: string }) {
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    addTask(newTask, columnId);
     setNewTask({
       title: "",
       description: "",
@@ -43,6 +44,18 @@ export function AddNewTaskForm({ columnId }: { columnId: string }) {
           isDone: false,
         },
       ],
+    });
+    fetch(`/api/dashboard/boards/tasks/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        newTask,
+      }),
+    }).then(() => {
+      mutate(`/api/dashboard/boards/${boardId}`);
     });
     setIsOpen(false);
   };

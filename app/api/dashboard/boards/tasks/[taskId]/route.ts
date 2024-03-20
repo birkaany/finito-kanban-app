@@ -24,3 +24,23 @@ export async function PUT(req: any) {
   });
   return NextResponse.json(task);
 }
+
+export async function POST(req: any) {
+  const body = await req.json();
+
+  const task = await prisma.task.create({
+    data: {
+      title: body.newTask.title,
+      description: body.newTask.description,
+      subtasks: {
+        create: body.newTask.subtasks,
+      },
+      column: {
+        connect: {
+          id: body.id,
+        },
+      },
+    },
+  });
+  return NextResponse.json(task);
+}
